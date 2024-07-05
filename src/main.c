@@ -7,17 +7,14 @@
 #include "input.h"
 #include "constants.h"
 
-typedef struct
-{
+typedef struct {
     SDL_Window *window;
     SDL_Renderer *renderer;
     GameState state;
 } Game;
 
-bool init_game(Game *game)
-{
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
-    {
+bool init_game(Game *game) {
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         fprintf(stderr, "Failed to init SDL: %s\n", SDL_GetError());
         return false;
     }
@@ -26,40 +23,34 @@ bool init_game(Game *game)
                                     SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                     CELL_SIZE * 3, CELL_SIZE * 3,
                                     SDL_WINDOW_SHOWN);
-    if (!game->window)
-    {
+    if (!game->window) {
         fprintf(stderr, "Failed to create window: %s\n", SDL_GetError());
         return false;
     }
 
     game->renderer = SDL_CreateRenderer(game->window, -1, SDL_RENDERER_ACCELERATED);
-    if (!game->renderer)
-    {
+    if (!game->renderer) {
         fprintf(stderr, "Failed to create renderer: %s\n", SDL_GetError());
         return false;
     }
 
-    initialize_game(&game->state);
+    initialize_state(&game->state);
     return true;
 }
 
-void cleanup_game(Game *game)
-{
+void cleanup_game(Game *game) {
     SDL_DestroyRenderer(game->renderer);
     SDL_DestroyWindow(game->window);
     SDL_Quit();
 }
 
-int main()
-{
+int main() {
     Game game;
-    if (!init_game(&game))
-    {
+    if (!init_game(&game)) {
         return 1;
     }
 
-    while (game.state.is_running)
-    {
+    while (game.state.is_running) {
         handle_events(&game.state);
         render_board(game.renderer, &game.state);
     }
