@@ -11,9 +11,15 @@ typedef enum {
 } Player;
 
 typedef struct {
+    int row;
+    int col;
+} CellIndex;
+
+typedef struct {
     Player grid[3][3];
     Player current_player;
     Player winning_player;
+    CellIndex winning_cells[3];
     bool is_running;
 } GameState;
 

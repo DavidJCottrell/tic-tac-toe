@@ -1,4 +1,0 @@
-/home/david/.cache/JetBrains/RemoteDev/dist/2d309d886531d_CLion-2024.1/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/david/.cache/JetBrains/RemoteDev/dist/2d309d886531d_CLion-2024.1/bin/ninja/linux/x64/ninja -G Ninja -S /home/david/projects/TicTacToe -B /home/david/projects/TicTacToe/cmake-build-debug
--- Configuring done (0.0s)
--- Generating done (0.0s)
--- Build files have been written to: /home/david/projects/TicTacToe/cmake-build-debug
