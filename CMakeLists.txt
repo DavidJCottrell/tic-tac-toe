@@ -1,6 +1,18 @@
 cmake_minimum_required(VERSION 3.13)
 project(TicTacToe)
 
+# Check if the Conan toolchain file exists and include it
+if(EXISTS "${CMAKE_BINARY_DIR}/conan_toolchain.cmake")
+    include("${CMAKE_BINARY_DIR}/conan_toolchain.cmake")
+else()
+    message(FATAL_ERROR "Conan toolchain file not found: ${CMAKE_BINARY_DIR}/conan_toolchain.cmake. Please run 'conan install .' first.")
+endif()
+
+# Set sysroot for macOS
+if (APPLE)
+    execute_process(COMMAND xcrun --show-sdk-path OUTPUT_VARIABLE CMAKE_OSX_SYSROOT OUTPUT_STRIP_TRAILING_WHITESPACE)
+endif()
+
 # Include directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
@@ -9,23 +21,23 @@ find_package(SDL2 REQUIRED)
 
 # Add the game logic library
 add_library(game_logic
-    src/game_logic.c
-    src/constants.c
-    include/constants.h
-    include/game_logic.h
+        src/game_logic.c
+        src/constants.c
+        include/constants.h
+        include/game_logic.h
 )
 
 # Add the executable for the main application
 add_executable(TicTacToe
-    src/main.c
-    src/rendering.c
-    src/input.c
-    include/input.h
-    include/rendering.h
+        src/main.c
+        src/rendering.c
+        src/input.c
+        include/input.h
+        include/rendering.h
 )
 
-# Link the game logic library to the main application
-target_link_libraries(TicTacToe PUBLIC SDL2 SDL2_mixer SDL2_image game_logic)
+# Link SDL2 and the game logic library to the main application
+target_link_libraries(TicTacToe SDL2::SDL2 SDL2::SDL2main game_logic)
 
 # Google Test
 # Add GoogleTest directory
