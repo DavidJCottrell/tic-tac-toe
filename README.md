@@ -1,9 +1,5 @@
 # Setup
 
-## Clone the repo:
-
-`git clone --recurse-submodules git@github.com:DavidJCottrell/tic-tac-toe.git`
-
 ## Create the build directory
 
 `mkdir build && cd build`
