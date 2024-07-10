@@ -1,5 +1,6 @@
 [requires]
 sdl/2.30.5
+gtest/1.14.0
 
 [generators]
 CMakeDeps

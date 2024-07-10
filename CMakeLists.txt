@@ -8,53 +8,46 @@ else()
     message(FATAL_ERROR "Conan toolchain file not found: ${CMAKE_BINARY_DIR}/conan_toolchain.cmake. Please run 'conan install .' first.")
 endif()
 
-# Set sysroot for macOS
 if (APPLE)
     execute_process(COMMAND xcrun --show-sdk-path OUTPUT_VARIABLE CMAKE_OSX_SYSROOT OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif()
 
-# Include directories
-include_directories(${PROJECT_SOURCE_DIR}/include)
 
-# Find SDL2 package
+include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${CONAN_INCLUDE_DIRS})
+
+
 find_package(SDL2 REQUIRED)
 
-# Add the game logic library
+
 add_library(game_logic
-        src/game_logic.c
-        src/constants.c
-        include/constants.h
-        include/game_logic.h
+    src/game_logic.c
+    src/constants.c
+    include/constants.h
+    include/game_logic.h
 )
 
-# Add the executable for the main application
+
 add_executable(TicTacToe
-        src/main.c
-        src/rendering.c
-        src/input.c
-        include/input.h
-        include/rendering.h
+    src/main.c
+    src/rendering.c
+    src/input.c
+    include/input.h
+    include/rendering.h
 )
 
-# Link SDL2 and the game logic library to the main application
 target_link_libraries(TicTacToe SDL2::SDL2 SDL2::SDL2main game_logic)
 
-# Google Test
-# Add GoogleTest directory
-add_subdirectory(third_party/googletest)
-include_directories(third_party/googletest/googletest/include)
 
-# Test sources
+# GoogleTest
+find_package(GTest REQUIRED)
+
 set(TEST_SOURCES test/game_logic_test.cpp)
 
-# Add the test executable
 add_executable(runTests ${TEST_SOURCES})
 
-# Link the test executable against gtest, gtest_main, and the game logic library
-target_link_libraries(runTests gtest gtest_main game_logic)
+target_link_libraries(runTests GTest::gtest GTest::gtest_main game_logic)
 
-# Enable testing
 enable_testing()
 
-# Add tests
 add_test(NAME game_logic_test COMMAND runTests)
